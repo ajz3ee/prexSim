@@ -50,19 +50,6 @@
     <!-- referenced from elog 2977 by Seamus where predicted relative shift is 46 cm -->
     <constant name="crex_target_center" value="-151.3"/>
 
-    <!-- Detector dimensions  -->
-    <constant name="det_thick" value="1"/>
-    <constant name="det_inner_r" value="length_mother/2+prex_target_center-det_thick"/>  <!-- as large as it can be... -->
-    <constant name="det_outer_r" value="length_mother/2+prex_target_center"/>
-
-    <!-- Beam-line Cylindical Detector dimensions  -->
-    <constant name="beam_cyl_det_thick" value="0.1"/>
-    <constant name="beam_cyl_det_inner_r" value="46.9"/>
-    <constant name="beam_cyl_det_outer_r" value="47"/>
-
-    <!-- Beam-line Cylindical Detector covers upto the septum pipe (lenght is 135.213)-->
-    <constant name="beam_cyl_det_length" value="3074.44+135.213"/>
-
     <!-- Target dimensions  -->
     <constant name="inner_rad_targ" value="0.0"/>
     <constant name="outer_rad_targ" value="4.0"/>
@@ -204,21 +191,6 @@
               value="center_sc+inner_r_sc+length_sc_attach/2"/> <!-- -27.028 cm -->
     <!-- Need to get a real number for this for actual attachment... -->
     <constant name="length_sc_attach_hole" value="outer_r_sc"/>
-
-    <!-- o-rings and o-ring detectors -->
-
-    <!--  <constant name="width_sc_oring" value="46"/>  -->
-    <!--  <constant name="height_sc_oring" value="25"/>  -->
-    <!--  <constant name="length_sc_oring" value="0.5"/>  -->
-    <!--  <constant name="thick_sc_oring" value="1"/>  -->
-
-    <constant name="width_sc_oring" value="47"/>
-    <constant name="height_sc_oring" value="26"/>
-    <constant name="length_sc_oring" value="2"/>
-    <constant name="thick_sc_oring" value="2"/>
-
-    <constant name="center_sc_oring" value="prex_target_center+outer_r_sc+deltaz_sc+.05"/>
-    <constant name="center_sc_oringDet" value="center_sc_oring+(length_sc_oring+0.5)/2"/>
 
     <!-- New dual Scattering chamber dimensions -->
     <constant name="y_offset_new_sc" value="15"/>
@@ -581,8 +553,6 @@
     <position unit="cm" name="scAttachShieldTrans_1" x="0" y="0" z="-1*length_sc_attach_shield/2"/>
 
     <position unit="cm" name="scOringTrans_1" x="0" y="0" z="0"/>
-    <position unit="cm" name="sc_oring_center" x="0" y="0" z="center_sc_oring"/>
-    <position unit="cm" name="sc_oringDet_center" x="0" y="0" z="center_sc_oringDet"/>
 
     <position unit="cm" name="collTrans_1"       x="0" y="0"     z="-1*(length_coll)/4"/>
     <position unit="cm" name="collTrans_2"       x="0" y="0"     z="(length_coll)/4"/>
@@ -674,7 +644,6 @@
     <position unit="cm" name="dDet_beamline_pos_2"       x="0" y="0"     z="center_targ+336.831"/>
     <position unit="cm" name="dDet_beamline_pos_3"       x="0" y="0"     z="center_targ+2757.199"/>
     <position unit="cm" name="dDet_beamline_pos_4"       x="0" y="0"     z="center_targ+3311.975"/>
-    <position unit="cm" name="beam_cyl_det_pos"       x="0" y="0"     z="center_targ+237.535-length_septum_pipe+beam_cyl_det_length/2"/>
 
     <position unit="cm" name="crex_det_pos" x="0" y="outer_r_new_sc+0.5" z="crex_target_center"/>  <!--changed x="height_new_sc/2.+1.0" to x=0 CAP and y="0" to y=outer_r_new_sc+0.5-->
 
@@ -1517,18 +1486,6 @@
       <second ref="sub_new_sc_beampipe_0"/>
       <positionref ref="new_sc_Trans_0"/>
       <rotationref ref="scRot_13"/>  <!--changed from scRot_1 to 13 CAP-->
-    </subtraction>
-
-    <!-- o-rings and o-ring detectors -->
-    <box lunit="cm" name="sc_oring_det_solid" x="width_sc_attach - 1.001*thick_sc_attach" y="height_sc_attach - 1.001*thick_sc_attach" z="0.5"/>
-
-    <box lunit="cm" name="sc_oring_o" x="width_sc_oring" y="height_sc_oring" z="length_sc_oring"/>
-    <box lunit="cm" name="sc_oring_i" x="width_sc_oring - thick_sc_oring" y="height_sc_oring - thick_sc_oring" z="1.5*length_sc_oring"/>
-
-    <subtraction name ="sc_oring_solid">
-      <first ref="sc_oring_o"/>
-      <second ref="sc_oring_i"/>
-      <positionref ref="scOringTrans_1"/>
     </subtraction>
 
     <!-- Septum -->
@@ -2502,14 +2459,6 @@
           lunit="cm" name="dDet_beamline_4"
           rmin="0" rmax="beamline[1,12]" z="0.1" />
 
-    <!-- Beam-line Cylindical detector outside the beamline : Rakitha Tue Nov 12 11:23:08 EST 2013 -->
-    <tube aunit="deg" startphi="0" deltaphi="360"
-          lunit="cm" name="beam_cyl_det"
-          rmin="beam_cyl_det_inner_r"
-          rmax="beam_cyl_det_outer_r"
-          z="beam_cyl_det_length" />
-
-
     <!-- Q1 dipole -->
     <tube aunit="deg" startphi="90" deltaphi="360"
           lunit="cm" name="Dipole_ip1_cut"
@@ -2896,17 +2845,6 @@
       <auxiliary auxtype="SensDet" auxvalue="volumeN3111"/>
     </volume>
 
-    <volume name="sc_oring_logic">
-      <materialref ref="Aluminum"/>
-      <solidref ref="sc_oring_solid"/>
-      <!--      <auxiliary auxtype="SensDet" auxvalue="planeDet"/> -->
-    </volume>
-    <volume name="sc_oringDet_logic">
-      <materialref ref="Vacuum"/>
-      <solidref ref="sc_oring_det_solid"/>
-      <!--      <auxiliary auxtype="SensDet" auxvalue="planeDet"/> -->
-    </volume>
-
     <volume name="septum_logic">
       <materialref ref="Iron"/>
       <solidref ref="septum_solid"/>
@@ -3114,47 +3052,45 @@
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11003"/>
     </volume>
-
     <volume name="tube_ion_chamb_2_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11004"/>
     </volume>
-
     <volume name="tube_ion_chamb_3_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11005"/>
     </volume>
-
     <volume name="tube_ion_chamb_4_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11006"/>
     </volume>
-
     <volume name="tube_ion_chamb_5_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11007"/>
     </volume>
-
     <volume name="tube_ion_chamb_6_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11008"/>
     </volume>
-
     <volume name="tube_ion_chamb_7_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11009"/>
     </volume>
-
     <volume name="tube_ion_chamb_8_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11010"/>
+    </volume>
+    <volume name="tube_ion_chamb_9_logic">
+      <materialref ref="Argon"/>
+      <solidref ref="tube_ion_chamb_solid"/>
+      <auxiliary auxtype="SensDet" auxvalue="volumeN11011"/>
     </volume>
 
     <volume name="logicMother">
@@ -3178,7 +3114,7 @@
 
       <physvol name="target">
         <volumeref ref="target_logic"/>
-        <position name="target_pos_global" unit="cm" x="0" y="0" z="-110.3"/>
+        <position name="target_pos_global" unit="cm" x="0" y="0" z="-115"/>
       </physvol>
 
       <physvol name="septum">
@@ -3186,16 +3122,15 @@
         <positionref ref="septum_center"/>
       </physvol>
 
-      <physvol name="septum_shield_r">
+      <!-- <physvol name="septum_shield_r">
         <volumeref ref="septShld_r_logic"/>
         <positionref ref="septShld_center_r"/>
       </physvol>
 
-
       <physvol name="septum_shield_l">
         <volumeref ref="septShld_l_logic"/>
         <positionref ref="septShld_center_l"/>
-      </physvol>
+      </physvol> -->
 
       <physvol name="septum_pipe">
         <volumeref ref="septum_pipe_logic" />
@@ -3287,12 +3222,12 @@
       </physvol>
       <physvol name="gate_valve">
         <volumeref ref="gate_valve_logic"/>
-        <position name="gate_valve_pos" unit="cm" x="0" y="0" z="-79.9171"/>
+        <position name="gate_valve_pos" unit="cm" x="0" y="0" z="-84.9171"/>
         <rotation name="gate_valve_rot" unit="deg" x="0" y="0" z="180"/>
       </physvol>
       <physvol name="targ_shld">
         <volumeref ref="targ_shld_logic"/>
-        <position name="targ_shld_pos" unit="cm" x="0" y="0" z="-85.2749"/>
+        <position name="targ_shld_pos" unit="cm" x="0" y="0" z="-90.2749"/>
       </physvol>
       <physvol name="vacuum_pipe">
         <volumeref ref="vacuum_pipe_logic"/>
@@ -3304,43 +3239,53 @@
       </physvol>
       <physvol name="targ_shld_liner">
         <volumeref ref="targ_shld_liner_logic"/>
-        <position name="targ_shld_liner_pos" unit="cm" x="0" y="0" z="-89.0849"/>
+        <position name="targ_shld_liner_pos" unit="cm" x="0" y="0" z="-94.0849"/>
       </physvol>
 
       <physvol name="tube_ion_chamb_1">
         <volumeref ref="tube_ion_chamb_1_logic"/>
-        <position unit="cm" name="tube_ion_chamb_1_pos" x="-100" y="0" z="-210"/>
+        <position unit="cm" name="tube_ion_chamb_1_pos" x="-25" y="0" z="-1110"/>
         <rotation name="IonChamberRot1" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_2">
         <volumeref ref="tube_ion_chamb_2_logic"/>
-        <position unit="cm" name="tube_ion_chamb_2_pos" x="-100" y="0" z="-110"/>
+        <position unit="cm" name="tube_ion_chamb_2_pos" x="-25" y="0" z="-510"/>
         <rotation name="IonChamberRot2" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_3">
         <volumeref ref="tube_ion_chamb_3_logic"/>
-        <position unit="cm" name="tube_ion_chamb_3_pos" x="-100" y="0" z="-24.558"/>
+        <position unit="cm" name="tube_ion_chamb_3_pos" x="-25" y="0" z="-210"/>
         <rotation name="IonChamberRot3" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_4">
         <volumeref ref="tube_ion_chamb_4_logic"/>
-        <position unit="cm" name="tube_ion_chamb_4_pos" x="-100" y="0" z="70"/>
+        <position unit="cm" name="tube_ion_chamb_4_pos" x="-50" y="0" z="-115"/>
         <rotation name="IonChamberRot4" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_5">
         <volumeref ref="tube_ion_chamb_5_logic"/>
-        <position unit="cm" name="tube_ion_chamb_5_pos" x="-100" y="0" z="130"/>
+        <position unit="cm" name="tube_ion_chamb_5_pos" x="-75" y="0" z="-24.558"/>
         <rotation name="IonChamberRot5" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_6">
         <volumeref ref="tube_ion_chamb_6_logic"/>
-        <position unit="cm" name="tube_ion_chamb_6_pos" x="-100" y="0" z="700"/>
+        <position unit="cm" name="tube_ion_chamb_6_pos" x="-75" y="0" z="70"/>
         <rotation name="IonChamberRot6" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_7">
         <volumeref ref="tube_ion_chamb_7_logic"/>
-        <position unit="cm" name="tube_ion_chamb_7_pos" x="-100" y="0" z="2400"/>
+        <position unit="cm" name="tube_ion_chamb_7_pos" x="-100" y="0" z="700"/>
         <rotation name="IonChamberRot7" unit="deg" x="90" y="0" z="0"/>
+      </physvol>
+      <physvol name="tube_ion_chamb_8">
+        <volumeref ref="tube_ion_chamb_8_logic"/>
+        <position unit="cm" name="tube_ion_chamb_8_pos" x="-75" y="0" z="800"/>
+        <rotation name="IonChamberRot8" unit="deg" x="90" y="0" z="0"/>
+      </physvol>
+      <physvol name="tube_ion_chamb_9">
+        <volumeref ref="tube_ion_chamb_9_logic"/>
+        <position unit="cm" name="tube_ion_chamb_9_pos" x="-75" y="0" z="2400"/>
+        <rotation name="IonChamberRot9" unit="deg" x="90" y="0" z="0"/>
       </physvol>
 
       <physvol>
@@ -3351,12 +3296,12 @@
 
       <physvol>
         <file name="geometry/subQ1HosesCylRedesign.gdml"/>
-        <position name="q1_hose_cyl_pos" unit="cm" x="0" y="0" z="210"/>
+        <position name="q1_hose_cyl_pos" unit="cm" x="0" y="0" z="235"/>
       </physvol>
 
       <physvol>
         <file name="geometry/subTargetChamber.gdml"/>
-        <position name="target_chamber_center" unit="cm" x="0" y="0" z="-110.3"/>
+        <position name="target_chamber_center" unit="cm" x="0" y="0" z="-115"/>
       </physvol>
 
       <physvol>

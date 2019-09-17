@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 
+<!DOCTYPE gdml [
+<!ENTITY materials SYSTEM "materials.xml">
+]>
+
 <gdml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./schema/gdml.xsd">
   <define>
-    <constant name="cyl_z_start" value="210"/>
-    <constant name="cyl_gap_start" value="234"/>
-    <constant name="cyl_gap_end" value="235"/>
-    <constant name="cyl_z_end" value="250"/>
-    <constant name="q1_hose_z_center" value="230"/>
+    <constant name="cyl_z_start" value="225"/>
+    <constant name="cyl_z_end" value="245"/>
+    <constant name="cm_factor" value="2.54"/>
 
     <constant name="cyl_upper_limit_angle" value="-60"/>
     <constant name="cyl_lower_limit_angle" value="60"/>
-    <constant name="cyl_outer_rad" value="15"/>
-    <constant name="ups_inner_rad" value="5.58"/>
-    <constant name="dwn_inner_rad" value="6.85"/>
-    <constant name="ups_length" value="cyl_gap_start - cyl_z_start"/>
-    <constant name="dwn_length" value="cyl_z_end - cyl_gap_end"/>
+    <constant name="liner_inner_rad" value="8.02"/>
+    <constant name="liner_outer_rad" value="liner_inner_rad + 2."/>
+    <constant name="inner_iron_inner_rad" value="14.25"/>
+    <constant name="inner_iron_outer_rad" value="inner_iron_inner_rad + 0.35"/>
+    <constant name="cyl_inner_rad" value="inner_iron_outer_rad"/>
+    <constant name="cyl_outer_rad" value="cyl_inner_rad + 0.5"/>
+    <constant name="outer_iron_inner_rad" value="cyl_outer_rad"/>
+    <constant name="outer_iron_outer_rad" value="outer_iron_inner_rad + 1."/>
+    <constant name="cyl_length" value="cyl_z_end - cyl_z_start"/>
+    <constant name="lead_length" value="2*cyl_length"/>
+    <constant name="donut_length" value="2."/>
+
+    <constant name="magshield_width_1" value="(3.71 + 0.25)*cm_factor"/>
+    <constant name="magshield_length_1" value="7.38*cm_factor"/>
+    <constant name="magshield_width_2" value="(3.96 + 0.25)*cm_factor"/>
+    <constant name="magshield_length_2" value="5.88*cm_factor"/>
+    <constant name="magshield_width_3" value="(4.21 + 0.25)*cm_factor"/>
+    <constant name="magshield_length_3" value="8.13*cm_factor"/>
+
 
     <position name="pos_center" unit="cm" x="0" y="0" z="0"/>
-
-    <position name="pos_ups_hose" unit="cm" x="0" y="0" z="0.5*(cyl_gap_start - cyl_z_end)"/>
-    <position name="pos_dwn_hose" unit="cm" x="0" y="0" z="0.5*(cyl_gap_end - cyl_z_start)"/>
-    <position name="pos_rel_dwn_hose" unit="cm" x="0" y="0" z="0.5*(cyl_z_end + cyl_gap_end - cyl_gap_start - cyl_z_start)"/>
+    <position name="pos_rel_liner" unit="cm" x="0" y="0" z="-cyl_length/2."/>
+    <position name="pos_rel_donut" unit="cm" x="0" y="0" z="-(cyl_length + donut_length)/2."/>
+    <position name="pos_global_magshield" unit="cm" x="0" y="0" z="-70.0426"/>
+    <position name="pos_rel_connector" unit="cm" x="0" y="0" z="-cyl_length"/>
 
     <rotation name="rot_flip" unit="deg" x="0" y="0" z="180"/>
+    <rotation name="rot_z45" unit="deg" x="0" y="0" z="45"/>
   </define>
 
-  <materials>
+  <!-- <materials>
     <element Z="6" formula="C" name="Carbon">
       <atom value="12" />
     </element>
@@ -50,76 +67,152 @@
       <D unit="g/cm3" value="1e-25"/>
       <atom unit="g/mole" value="1.01"/>
     </material>
-  </materials>
+  </materials>-->
+
+  &materials;
 
   <solids>
-    <tube lunit="cm" aunit="deg" name="ups_hose_cyl" z="ups_length" rmin="ups_inner_rad" rmax="cyl_outer_rad"
+    <tube lunit="cm" aunit="deg" name="lead_liner_solid" z="lead_length"
+          rmin="liner_inner_rad" rmax="liner_outer_rad" startphi="0" deltaphi="360"/>
+    <tube lunit="cm" aunit="deg" name="inner_iron_solid" z="cyl_length" 
+          rmin="inner_iron_inner_rad" rmax="inner_iron_outer_rad" startphi="0" deltaphi="360"/>
+    <tube lunit="cm" aunit="deg" name="hose_cyl_solid" z="cyl_length" rmin="cyl_inner_rad" rmax="cyl_outer_rad"
           startphi="cyl_upper_limit_angle" deltaphi="cyl_lower_limit_angle - cyl_upper_limit_angle"/>
-    <tube lunit="cm" aunit="deg" name="dwn_hose_cyl" z="dwn_length" rmin="dwn_inner_rad" rmax="cyl_outer_rad"
-          startphi="cyl_upper_limit_angle" deltaphi="cyl_lower_limit_angle - cyl_upper_limit_angle"/>
+    <tube lunit="cm" aunit="deg" name="outer_iron_solid" z="cyl_length"
+          rmin="outer_iron_inner_rad" rmax="outer_iron_outer_rad" startphi="0" deltaphi="360"/>
+    <tube lunit="cm" aunit="deg" name="donut_shield_solid" z="donut_length"
+          rmin="liner_outer_rad" rmax="outer_iron_outer_rad" startphi="0" deltaphi="360"/>
 
-    <union name="cyl_union_1">
-      <first ref="ups_hose_cyl"/>
-      <second ref="ups_hose_cyl"/>
+    <box lunit="cm" name="magshield_whole_1" x="magshield_width_1" y="magshield_width_1" z="magshield_length_1 + 0.1"/>
+    <box lunit="cm" name="magshield_cut_1" x="magshield_width_1 - cm_factor*0.5" 
+        y="magshield_width_1 - cm_factor*0.5" z="magshield_length_1 + 0.11"/>
+    <box lunit="cm" name="magshield_whole_2" x="magshield_width_2" y="magshield_width_2" z="magshield_length_2 + 0.1"/>
+    <box lunit="cm" name="magshield_cut_2" x="magshield_width_2 - cm_factor*0.5" 
+      y="magshield_width_2 - cm_factor*0.5" z="magshield_length_2 + 0.11"/>
+    <box lunit="cm" name="magshield_whole_3" x="magshield_width_3" y="magshield_width_3" z="magshield_length_3 + 0.1"/>
+    <box lunit="cm" name="magshield_cut_3" x="magshield_width_3 - cm_factor*0.5" 
+      y="magshield_width_3 - cm_factor*0.5" z="magshield_length_3 + 0.11"/>
+    
+    <subtraction name="magshield_solid_1">
+      <first ref="magshield_whole_1"/>
+      <second ref="magshield_cut_1"/>
+      <positionref ref="pos_center"/>
+    </subtraction>
+    <subtraction name="magshield_solid_2">
+      <first ref="magshield_whole_2"/>
+      <second ref="magshield_cut_2"/>
+      <positionref ref="pos_center"/>
+    </subtraction>
+    <subtraction name="magshield_solid_3">
+      <first ref="magshield_whole_3"/>
+      <second ref="magshield_cut_3"/>
+      <positionref ref="pos_center"/>
+    </subtraction>
+
+    <union name="magshield_solid_4">
+      <first ref="magshield_solid_1"/>
+      <second ref="magshield_solid_2"/>
+      <position name="pos_rel_magshield_1" unit="cm" x="0" y="0" z="0.5*(magshield_length_1 + magshield_length_2)"/>
+    </union>
+    <union name="magshield_solid">
+      <first ref="magshield_solid_4"/>
+      <second ref="magshield_solid_3"/>
+      <position name="pos_rel_magshield_2" unit="cm" x="0" y="0" z="0.5*(magshield_length_1 + magshield_length_3) + magshield_length_2"/>
+    </union>
+
+    <!-- <union name="cyl_union_1">
+      <first ref="hose_cyl_solid"/>
+      <second ref="hose_cyl_solid"/>
       <positionref ref="pos_center"/>
       <rotationref ref="rot_flip"/>
     </union>
-    <union name="cyl_union_2">
-      <first ref="dwn_hose_cyl"/>
-      <second ref="dwn_hose_cyl"/>
-      <positionref ref="pos_center"/>
-      <rotationref ref="rot_flip"/>
-    </union>
-    <union name="cyl_union_3">
+    <union name="cyl_union">
       <first ref="cyl_union_1"/>
-      <second ref="cyl_union_2"/>
-      <positionref ref="pos_rel_dwn_hose"/>
+      <second ref="lead_liner_solid"/>
+      <positionref ref="pos_center"/>
+    </union>  -->
+    <tube lunit="cm" aunit="deg" name="cyl_union_0" z="3*cyl_length"
+          rmin="liner_inner_rad" rmax="outer_iron_outer_rad" startphi="0" deltaphi="360"/>
+    <tube lunit="cm" aunit="deg" name="connector_solid" z="cyl_length"
+          rmin="6" rmax="10" startphi="0" deltaphi="360"/>
+    <union name="cyl_union_1">
+      <first ref="cyl_union_0"/>
+      <second ref="connector_solid"/>
+      <positionref ref="pos_rel_connector"/>
+    </union>
+    <union name="cyl_union">
+      <first ref="cyl_union_1"/>
+      <second ref="magshield_solid"/>
+      <positionref ref="pos_global_magshield"/>
+      <rotationref ref="rot_z45"/>
     </union>
   </solids>
 
   <structure>
-    <volume name="logic_q1_left_ups_hose">
+    <volume name="lead_liner_logic">
+      <materialref ref="StainlessSteel"/>
+      <solidref ref="lead_liner_solid"/>
+    </volume>
+    <volume name="inner_iron_logic">
+      <materialref ref="Iron"/>
+      <solidref ref="inner_iron_solid"/>
+    </volume>
+    <volume name="hose_cyl_left_logic">
       <materialref ref="G4_RUBBER_NEOPRENE"/>
-      <solidref ref="ups_hose_cyl"/>
+      <solidref ref="hose_cyl_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN3211"/>
     </volume>
-    <volume name="logic_q1_left_dwn_hose">
+    <volume name="hose_cyl_right_logic">
       <materialref ref="G4_RUBBER_NEOPRENE"/>
-      <solidref ref="dwn_hose_cyl"/>
+      <solidref ref="hose_cyl_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN3212"/>
     </volume>
-    <volume name="logic_q1_right_ups_hose">
-      <materialref ref="G4_RUBBER_NEOPRENE"/>
-      <solidref ref="ups_hose_cyl"/>
-      <auxiliary auxtype="SensDet" auxvalue="volumeN3213"/>
+    <volume name="outer_iron_logic">
+      <materialref ref="Iron"/>
+      <solidref ref="outer_iron_solid"/>
     </volume>
-    <volume name="logic_q1_right_dwn_hose">
-      <materialref ref="G4_RUBBER_NEOPRENE"/>
-      <solidref ref="dwn_hose_cyl"/>
-      <auxiliary auxtype="SensDet" auxvalue="volumeN3214"/>
+    <volume name="donut_shield_logic">
+      <materialref ref="PureLead"/>
+      <solidref ref="donut_shield_solid"/>
+    </volume>
+    <volume name="magshield_logic">
+      <materialref ref="Iron"/>
+      <solidref ref="magshield_solid"/>
     </volume>
 
     <volume name="logic_q1_hoses">
       <materialref ref="Vacuum"/>
-      <solidref ref="cyl_union_3"/>
+      <solidref ref="cyl_union"/>
 
-      <physvol name="q1_left_ups_hose">
-        <volumeref ref="logic_q1_left_ups_hose"/>
+      <physvol name="lead_liner">
+        <volumeref ref="lead_liner_logic"/>
+        <positionref ref="pos_rel_liner"/>
+      </physvol>
+      <physvol name="inner_iron">
+        <volumeref ref="inner_iron_logic"/>
         <positionref ref="pos_center"/>
       </physvol>
-      <physvol name="q1_left_dwn_hose">
-        <volumeref ref="logic_q1_left_dwn_hose"/>
-        <positionref ref="pos_rel_dwn_hose"/>
+      <physvol name="hose_cyl_left">
+        <volumeref ref="hose_cyl_left_logic"/>
+        <positionref ref="pos_center"/>
       </physvol>
-      <physvol name="q1_right_ups_hose">
-        <volumeref ref="logic_q1_right_ups_hose"/>
+      <physvol name="hose_cyl_right">
+        <volumeref ref="hose_cyl_right_logic"/>
         <positionref ref="pos_center"/>
         <rotationref ref="rot_flip"/>
       </physvol>
-      <physvol name="q1_right_dwn_hose">
-        <volumeref ref="logic_q1_right_dwn_hose"/>
-        <positionref ref="pos_rel_dwn_hose"/>
-        <rotationref ref="rot_flip"/>
+      <physvol name="outer_iron">
+        <volumeref ref="outer_iron_logic"/>
+        <positionref ref="pos_center"/>
+      </physvol>
+      <!-- <physvol name="donut_shield">
+        <volumeref ref="donut_shield_logic"/>
+        <positionref ref="pos_rel_donut"/>
+      </physvol> -->
+      <physvol name="magshield">
+        <volumeref ref="magshield_logic"/>
+        <positionref ref="pos_global_magshield"/>
+        <rotationref ref="rot_z45"/>
       </physvol>
 
     </volume>

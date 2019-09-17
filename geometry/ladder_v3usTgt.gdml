@@ -3070,49 +3070,46 @@
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11003"/>
     </volume>
-
     <volume name="tube_ion_chamb_2_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11004"/>
     </volume>
-
     <volume name="tube_ion_chamb_3_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11005"/>
     </volume>
-
     <volume name="tube_ion_chamb_4_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11006"/>
     </volume>
-
     <volume name="tube_ion_chamb_5_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11007"/>
     </volume>
-
     <volume name="tube_ion_chamb_6_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11008"/>
     </volume>
-
     <volume name="tube_ion_chamb_7_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11009"/>
     </volume>
-
     <volume name="tube_ion_chamb_8_logic">
       <materialref ref="Argon"/>
       <solidref ref="tube_ion_chamb_solid"/>
       <auxiliary auxtype="SensDet" auxvalue="volumeN11010"/>
     </volume>
-
+    <volume name="tube_ion_chamb_9_logic">
+      <materialref ref="Argon"/>
+      <solidref ref="tube_ion_chamb_solid"/>
+      <auxiliary auxtype="SensDet" auxvalue="volumeN11011"/>
+    </volume>
 
     <volume name="logicMother">
       <materialref ref="Vacuum"/>
@@ -3275,44 +3272,49 @@
 
       <physvol name="tube_ion_chamb_1">
         <volumeref ref="tube_ion_chamb_1_logic"/>
-        <position unit="cm" name="tube_ion_chamb_1_pos" x="-100" y="0" z="-210"/>
+        <position unit="cm" name="tube_ion_chamb_1_pos" x="-25" y="0" z="-1110"/>
         <rotation name="IonChamberRot1" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_2">
         <volumeref ref="tube_ion_chamb_2_logic"/>
-        <position unit="cm" name="tube_ion_chamb_2_pos" x="-100" y="0" z="-110"/>
+        <position unit="cm" name="tube_ion_chamb_2_pos" x="-25" y="0" z="-510"/>
         <rotation name="IonChamberRot2" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_3">
         <volumeref ref="tube_ion_chamb_3_logic"/>
-        <position unit="cm" name="tube_ion_chamb_3_pos" x="-100" y="0" z="-24.558"/>
+        <position unit="cm" name="tube_ion_chamb_3_pos" x="-25" y="0" z="-210"/>
         <rotation name="IonChamberRot3" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_4">
         <volumeref ref="tube_ion_chamb_4_logic"/>
-        <position unit="cm" name="tube_ion_chamb_4_pos" x="-100" y="0" z="70"/>
+        <position unit="cm" name="tube_ion_chamb_4_pos" x="-50" y="0" z="-110"/>
         <rotation name="IonChamberRot4" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_5">
         <volumeref ref="tube_ion_chamb_5_logic"/>
-        <position unit="cm" name="tube_ion_chamb_5_pos" x="-100" y="0" z="130"/>
+        <position unit="cm" name="tube_ion_chamb_5_pos" x="-75" y="0" z="-24.558"/>
         <rotation name="IonChamberRot5" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_6">
         <volumeref ref="tube_ion_chamb_6_logic"/>
-        <position unit="cm" name="tube_ion_chamb_6_pos" x="-100" y="0" z="700"/>
+        <position unit="cm" name="tube_ion_chamb_6_pos" x="-75" y="0" z="70"/>
         <rotation name="IonChamberRot6" unit="deg" x="90" y="0" z="0"/>
       </physvol>
       <physvol name="tube_ion_chamb_7">
         <volumeref ref="tube_ion_chamb_7_logic"/>
-        <position unit="cm" name="tube_ion_chamb_7_pos" x="-100" y="0" z="2400"/>
+        <position unit="cm" name="tube_ion_chamb_7_pos" x="-100" y="0" z="700"/>
         <rotation name="IonChamberRot7" unit="deg" x="90" y="0" z="0"/>
       </physvol>
-      <!-- <physvol name="tube_ion_chamb_8">
+      <physvol name="tube_ion_chamb_8">
         <volumeref ref="tube_ion_chamb_8_logic"/>
-        <position unit="cm" name="tube_ion_chamb_8_pos" x="-25" y="0" z="-160"/>
+        <position unit="cm" name="tube_ion_chamb_8_pos" x="-75" y="0" z="800"/>
         <rotation name="IonChamberRot8" unit="deg" x="90" y="0" z="0"/>
-      </physvol> -->
+      </physvol>
+      <physvol name="tube_ion_chamb_9">
+        <volumeref ref="tube_ion_chamb_9_logic"/>
+        <position unit="cm" name="tube_ion_chamb_9_pos" x="-75" y="0" z="2400"/>
+        <rotation name="IonChamberRot9" unit="deg" x="90" y="0" z="0"/>
+      </physvol>
 
       <physvol>
         <file name="geometry/subKriptoniteDetectors.gdml"/>
